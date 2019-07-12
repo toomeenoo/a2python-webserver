@@ -10,7 +10,7 @@ syntaxcheck:
   stage: test
   script:
     - echo "Python syntax check"
-    - python ./ci-tools/checker.py 
+    - python ./ci-tools/checker.py .
 serverpush:
   stage: push
   only:
