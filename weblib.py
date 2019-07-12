@@ -6,6 +6,21 @@
 # --------------------------------------------------
 
 class Weblib:
+    """
+    Simple Apache2/CGI handler object
+
+    Attributes
+    ----------
+    string_body : str
+        response content in string format (html, json, ...)
+    array_headers : str
+        array af ready headers
+    headers_send : bool
+        was the http headers already sendt
+    apacheVars : array
+        fetched raw array of Apache2 vriables
+    """
+
     def __init__(self):
         import sys, os
         self.string_body = ""
@@ -13,7 +28,19 @@ class Weblib:
         self.headers_send = False
         self.apacheVars = os.environ.items()
 
-    def header(self, key, value):
+    def header(self, key:str, value:str):
+        """
+        Set HTTP heder
+
+        Parameters
+        ----------
+        key : str
+            Key of HTTP header to set (f.e.: Content-Type)
+        value : str
+            Value of HTTP header fieid (f.e.: application/json)
+        """
+        if(self.headers_send):
+            raise Exception("Headers was already sent!")
         index = 0
         found = False
         fullkey = key + ": " + value + "\n\n"
@@ -25,16 +52,53 @@ class Weblib:
         if(not found):
             self.array_headers.append(fullkey)
 
-    def write(self, data):
+    def write(self, data:str):
+        """
+        Append to body of output
+
+        Parameters
+        ----------
+        data : str
+            Content to append
+        """
         self.string_body += data
 
-    def server(self, key):
+    def server(self, key:str):
+        """
+        Get Apache variable
+
+        Parameters
+        ----------
+        key : str
+            Variable to get (default containg:)
+            HTTP_HOST, HTTP_USER_AGENT, HTTP_ACCEPT, 
+            HTTP_ACCEPT_LANGUAGE, HTTP_ACCEPT_ENCODING, 
+            HTTP_CONNECTION, HTTP_UPGRADE_INSECURE_REQUESTS, 
+            HTTP_CACHE_CONTROL, PATH, SERVER_SIGNATURE, 
+            SERVER_SOFTWARE, SERVER_NAME, SERVER_ADDR, 
+            SERVER_PORT, REMOTE_ADDR, DOCUMENT_ROOT, 
+            REQUEST_SCHEME, CONTEXT_PREFIX, 
+            CONTEXT_DOCUMENT_ROOT, SERVER_ADMIN, 
+            SCRIPT_FILENAME, REMOTE_PORT, GATEWAY_INTERFACE, 
+            SERVER_PROTOCOL, REQUEST_METHOD, QUERY_STRING, 
+            REQUEST_URI, SCRIPT_NAME
+        """
         for name, value in self.apacheVars:
             if(name == key):
                 return value
         return False
 
-    def query(self, key = "", fallback = False):
+    def query(self, key:str = "", fallback = False):
+        """
+        HTTP query variable
+
+        Parameters
+        ----------
+        key : str
+            Key to look for, if empty, returns array of all
+        fallback : any
+            Value to return if key not found
+        """
         from urllib.parse import parse_qs
         full_qeury = parse_qs(self.server("QUERY_STRING"), True)
         if(key == ""):
@@ -43,7 +107,15 @@ class Weblib:
             return full_qeury[key]
         return fallback
 
-    def flush(self, do_exit = True):
+    def flush(self, do_exit:bool = True):
+        """
+        Send content of buffer (and headers if not sent yet) to client
+
+        Parameters
+        ----------
+        do_exit : bool
+            to end script execution
+        """
         have_content_type = False
         if(not self.headers_send):
             for header in self.array_headers:
