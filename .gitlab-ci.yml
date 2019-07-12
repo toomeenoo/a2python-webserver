@@ -1,0 +1,27 @@
+##################################
+# Test php syntax & push to      #
+# http://py.toomeenoo.ml/        #
+# <tomie-molinari@gmail.com>     #
+##################################
+stages:
+  - test
+  - push
+phpsyntax:
+  stage: test
+  script:
+    - echo "Python syntax check"
+    - python ./citools/checker.py 
+serverpush:
+  stage: push
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME == "master"
+  artifacts:
+    paths:
+    - repo.zip
+    expire_in: 2 hrs
+  script:
+    - zip repo.zip ./* -r
+    - zip --delete repo.zip "ci-tools/*"
+    - zip --delete repo.zip "*.md" ".gitignore" ".gitlab-ci.yml"
+    - curl -F 'file=@repo.zip' -F "key=A3fa4ef6aDFt1v36742573Qe" -F "usefile-prefix=DEPLOY_" -F "path=/var/www/pyweb/ROOT/" https://delta.dev.toomeenoo.ml/tmp/ci-installer.php
