@@ -161,6 +161,7 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
         deleteDirectory($update_tmp_dir.$hashname);
 
         echo "Fix permissions dir...".PHP_EOL;
+        shell_exec("chmod 777 ".rtrim($_POST["path"], "/")."/ -R");
         shell_exec("chmod 777 ".__DIR__."/ -R");
 
         die("Finished; OK");
