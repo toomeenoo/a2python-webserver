@@ -6,11 +6,11 @@
 stages:
   - test
   - push
-phpsyntax:
+syntaxcheck:
   stage: test
   script:
     - echo "Python syntax check"
-    - python ./citools/checker.py 
+    - python ./ci-tools/checker.py 
 serverpush:
   stage: push
   only:
