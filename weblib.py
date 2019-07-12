@@ -1,6 +1,7 @@
 # --------------------------------------------------
 # Python for web simple library
-# Version 1.0.0
+# Version 1.0.1
+# For Apache2 Python3
 # Author Tomas Molinari <tomie.molinari@gmail.com>
 # --------------------------------------------------
 
@@ -34,11 +35,11 @@ class Weblib:
         return False
 
     def query(self, key = "", fallback = False):
-        from urlparse import parse_qs
-        full_qeury = parse_qs(self.server("QUERY_STRING"))
+        from urllib.parse import parse_qs
+        full_qeury = parse_qs(self.server("QUERY_STRING"), True)
         if(key == ""):
             return full_qeury
-        elif(full_qeury.has_key(key)):
+        elif(key in full_qeury):
             return full_qeury[key]
         return fallback
 
