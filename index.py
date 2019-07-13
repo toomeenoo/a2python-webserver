@@ -17,4 +17,5 @@ w.write("<br>Apache<br>")
 for name, value in os.environ.items():
     w.write(name+" => "+value+"<br>")
 
+w.setcookie("test", "75301", 60*60*4)
 w.write("<br>//end")
