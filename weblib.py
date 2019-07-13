@@ -90,9 +90,9 @@ class Weblib:
                 return value
         return False
 
-    def query(self, key:str = "", fallback = False):
+    def get(self, key:str = "", fallback = False):
         """
-        HTTP query variable
+        HTTP get query variable
 
         Parameters
         ----------
@@ -109,6 +109,23 @@ class Weblib:
             return full_qeury[key]
         return fallback
 
+    def post(self, key:str = "", fallback = False):
+        """
+        HTTP post query variable
+
+        Parameters
+        ----------
+        key : str
+            Key to look for, if empty, returns array of all
+        fallback : any
+            Value to return if key not found
+        """
+        import sys
+        str_tmp = ""
+        for line in sys.stdin:
+            str_tmp += line
+        return str_tmp
+    
     def flush(self, do_exit:bool = True):
         """
         Send content of buffer (and headers if not sent yet) to client
@@ -130,7 +147,6 @@ class Weblib:
             if(not have_content_type):
                 headers_str = "Content-type: text/html\r\n" + headers_str
             print(headers_str)
-            print("\r\n")
             self.headers_send = True
         print(self.string_body)
         self.string_body = ""
