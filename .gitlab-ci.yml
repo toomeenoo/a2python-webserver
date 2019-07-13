@@ -24,7 +24,7 @@ serverpush:
     - zip repo.zip ./* -r
     - zip --delete repo.zip "ci-tools/*"
     - zip --delete repo.zip "*.md" ".gitignore" ".gitlab-ci.yml"
-    - curl -F 'file=@repo.zip' -F "key=$REMOTE_INSTALLER_PUSH_KEY" -F "usefile-prefix=DEPLOY_" -F "path=/var/www/pyweb/ROOT/" https://dev.toomeenoo.ml/ci-installer/ci-installer.php -s -v --output installer-reposnse.txt
+    - curl -F 'file=@repo.zip' -F "key=$REMOTE_INSTALLER_PUSH_KEY" -F "path=/var/www/pyweb/ROOT/" https://dev.toomeenoo.ml/ci-installer/ci-installer.php -s -v --output installer-reposnse.txt
     - echo  "================ PHP Installer's response ================"
     - cat installer-reposnse.txt
     - cat installer-reposnse.txt | grep -e "; OK$"

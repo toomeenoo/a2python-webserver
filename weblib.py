@@ -102,7 +102,7 @@ class Weblib:
             Value to return if key not found
         """
         from urllib.parse import parse_qs
-        full_qeury = parse_qs(self.server("QUERY_STRING"), True)
+        full_qeury = parse_qs(self.server("QUERY_STRING"))
         if(key == ""):
             return full_qeury
         elif(key in full_qeury):
@@ -127,7 +127,7 @@ class Weblib:
         str_input = ""
         for line in sys.stdin:
             str_input += line
-        full_qeury = parse_qs(str_input, True)
+        full_qeury = parse_qs(str_input)
         if(key == ""):
             return full_qeury
         elif(key in full_qeury):
