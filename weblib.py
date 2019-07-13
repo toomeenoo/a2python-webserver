@@ -133,9 +133,26 @@ class Weblib:
             exit()
         return self
 
-    def setcookie(self, name, value, duration_or_date = None, domain = None, path = None, secure = None, http_only = None):
+    def setcookie(self, name : str, value : str, duration_or_date = None, domain = None, path = None, secure = None, http_only = None):
         """
         Create Set-Cookie HTTP header
+
+        Parameters
+        ----------
+        name : str
+            name of cookie to set
+        value : str
+            value of cookie to set
+        duration_or_date : None | str | int
+            Set expire tome of cookie, int of seconds or str: rfc1123-date | rfc850-date | asctime-date
+        domain : None | str
+            Domain to be used for cookie
+        path : None | str
+            Path (url related) to set cookie
+        secure : None | bool
+            Allow use of https only
+        http_only : None | bool
+            Allow access to cookie only from http, not from javascript / frontend
         """
         from urllib.parse import quote
         content = quote(name) + "=" + quote(value)
