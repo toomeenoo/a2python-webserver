@@ -43,9 +43,9 @@ class Weblib:
             raise Exception("Headers was already sent!")
         index = 0
         found = False
-        fullkey = key + ": " + value + "\n"
+        fullkey = key + ":" + value + "\r\n"
         for header in self.array_headers:
-            if(key != "Set-Cookie" and header.startswith( key+": " )):
+            if(key != "Set-Cookie" and header.startswith( key+":" )):
                 self.array_headers[index] = fullkey
                 found = True
             index += 1
@@ -125,9 +125,9 @@ class Weblib:
                     have_content_type = True
                 print(header)
             if(not have_content_type):
-                print("Content-type: text/html\n")
+                print("Content-type: text/html\r\n")
             self.headers_send = True
-        print("\n")
+        print("\r\n")
         print(self.string_body)
         self.string_body = ""
         if(do_exit):
