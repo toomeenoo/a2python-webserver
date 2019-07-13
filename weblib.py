@@ -45,12 +45,13 @@ class Weblib:
         found = False
         fullkey = key + ": " + value + "\n\n"
         for header in self.array_headers:
-            if(header.startswith( key+": " )):
+            if(header.startswith( key+": " ) and key != "Set-Cookie"):
                 self.array_headers[index] = fullkey
                 found = True
             index += 1
         if(not found):
             self.array_headers.append(fullkey)
+        return self
 
     def write(self, data:str):
         """
@@ -62,6 +63,7 @@ class Weblib:
             Content to append
         """
         self.string_body += data
+        return self
 
     def server(self, key:str):
         """
@@ -129,6 +131,28 @@ class Weblib:
         self.string_body = ""
         if(do_exit):
             exit()
+        return self
+
+    def setcookie(self, name, value, duration_or_date = None, domain = None, path = None, secure = None, http_only = None):
+        """
+        Create Set-Cookie HTTP header
+        """
+        from urllib.parse import quote
+        content = quote(name) + "=" + quote(value)
+        if(isinstance(duration_or_date, int)):
+            content += "; Max-Age="+str(duration_or_date)
+        elif(isinstance(duration_or_date, str)):
+            content += "; Expires="+duration_or_date
+        if(isinstance(domain, str)):
+            content += "; Domain="+domain
+        if(isinstance(path, str)):
+            content += "; Path="+domain
+        if(isinstance(secure, bool) and secure):
+            content += "; Secure"
+        if(isinstance(http_only, bool) and http_only):
+            content += "; HttpOnly"
+        self.header("Set-Cookie", content)
+        return self
 
     def __del__(self):
         self.flush()
