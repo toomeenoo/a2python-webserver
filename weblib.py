@@ -118,16 +118,20 @@ class Weblib:
         do_exit : bool
             to end script execution
         """
+        headers_str = ""
         have_content_type = False
         if(not self.headers_send):
             for header in self.array_headers:
                 if(header.startswith("Content-Type")):
                     have_content_type = True
-                print(header)
+                    headers_str = header + headers_str
+                else:
+                    headers_str += header
             if(not have_content_type):
-                print("Content-type: text/html\r\n")
+                headers_str = "Content-type: text/html\r\n" + headers_str
+            print(headers_str)
+            print("\r\n")
             self.headers_send = True
-        print("\r\n")
         print(self.string_body)
         self.string_body = ""
         if(do_exit):
