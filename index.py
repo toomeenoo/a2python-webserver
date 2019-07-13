@@ -13,7 +13,7 @@ w.write("Cookie \"test\" should be set to: \"testcookie-value\", valid next 4hrs
 w.write("<br><br><b>Dir</b> variables<br>")
 for name in dir():
     myvalue = eval(name)
-    w.write( name+" =&gt; "+str(myvalue).replace("&","&amp;").replace("<","&lt;").replace(">","&rt;")+"<br>")
+    w.write( name+" =&gt; "+str(myvalue).replace("&","&amp;").replace("<","&lt;").replace(">","&gt")+"<br>")
 
 w.write("<br><b>Apache</b> variables<br>")
 for name, value in os.environ.items():
