@@ -121,10 +121,16 @@ class Weblib:
             Value to return if key not found
         """
         import sys
-        str_tmp = ""
+        from urllib.parse import parse_qs
+        str_input = ""
         for line in sys.stdin:
             str_tmp += line
-        return str_tmp
+        full_qeury = parse_qs(str_input, True)
+        if(key == ""):
+            return full_qeury
+        elif(key in full_qeury):
+            return full_qeury[key]
+        return fallback
     
     def flush(self, do_exit:bool = True):
         """
