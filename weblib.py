@@ -122,9 +122,11 @@ class Weblib:
         """
         import sys
         from urllib.parse import parse_qs
+        if(self.server("REQUEST_METHOD") != "POST"):
+            return fallback
         str_input = ""
         for line in sys.stdin:
-            str_tmp += line
+            str_input += line
         full_qeury = parse_qs(str_input, True)
         if(key == ""):
             return full_qeury
